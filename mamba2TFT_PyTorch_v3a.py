@@ -126,7 +126,7 @@ class PyTorchCanonicalTFT(nn.Module):
 # --- TRENING PETLJA ---
 def treniraj_v1():
     device = torch.device("mps" if torch.backends.mps.is_available() else "cpu")
-    csv_putanja = "/Users/4c/Desktop/GHQ/data/loto7_4682_k72.csv"
+    csv_putanja = "/data/loto7_4682_k72.csv"
     
     dataset = LotoPyTorchDataset(csv_putanja, prozor=40)
     dataloader = DataLoader(dataset, batch_size=32, shuffle=True)
@@ -188,7 +188,7 @@ Trening završen za: 546.79 sekundi.
 
 ==================================================
 REZULTAT ZA FAJL /Users/4c/Desktop/GHQ/data/loto7_4682_k72.csv (Sledeći red - PyTorch V3):
-[ 5  8 21 22 28 31 35]
+[ 5  x 21 y 28 z 35]
 ==================================================
 """
 
