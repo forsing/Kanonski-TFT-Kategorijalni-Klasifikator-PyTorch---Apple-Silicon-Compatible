@@ -126,7 +126,7 @@ class PyTorchCanonicalTFT(nn.Module):
 # --- TRENING PETLJA ---
 def treniraj_v1():
     device = torch.device("mps" if torch.backends.mps.is_available() else "cpu")
-    csv_putanja = "/Users/4c/Desktop/GHQ/data/loto7_4682_k72_loto_plus_1719.csv"
+    csv_putanja = "/data/loto7_4682_k72_loto_plus_1719.csv"
     
     dataset = LotoPyTorchDataset(csv_putanja, prozor=20)
     dataloader = DataLoader(dataset, batch_size=32, shuffle=True)
