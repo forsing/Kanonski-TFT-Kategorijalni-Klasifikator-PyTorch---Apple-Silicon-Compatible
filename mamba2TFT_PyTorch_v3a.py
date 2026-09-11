@@ -189,7 +189,7 @@ PyTorch Epoha [250/250] | Kategorijalni Gubitak: 5.9427
 Trening završen za: 878.38 sekundi.
 
 ==================================================
-REZULTAT ZA FAJL /Users/4c/Desktop/GHQ/data/loto7_4682_k72.csv (Sledeći red - PyTorch V3):
+REZULTAT ZA FAJL /data/loto7_4682_k72.csv (Sledeći red - PyTorch V3):
 [ 1  x 10 y 18 z 27]
 ==================================================
 """
