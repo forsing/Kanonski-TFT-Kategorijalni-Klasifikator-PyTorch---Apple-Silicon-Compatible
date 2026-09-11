@@ -1,6 +1,6 @@
 # Model V3: Kanonski TFT Kategorijalni Klasifikator (PyTorch - Apple Silicon Compatible) 
 
-
+# NEW - last version
 
 import torch
 import torch.nn as nn
@@ -128,18 +128,18 @@ def treniraj_v1():
     device = torch.device("mps" if torch.backends.mps.is_available() else "cpu")
     csv_putanja = "/data/loto7_4682_k72_loto_plus_1719.csv"
     
-    dataset = LotoPyTorchDataset(csv_putanja, prozor=20)
+    dataset = LotoPyTorchDataset(csv_putanja, prozor=30)
     dataloader = DataLoader(dataset, batch_size=32, shuffle=True)
     
     model = PyTorchCanonicalTFT().to(device)
     optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
     kriterijum = nn.CrossEntropyLoss()
     
-    print("Mamba-2 TFT PyTorch | Prozor: 40 | Epoha: 150 | Uređaj: mps")
+    print("Mamba-2 TFT PyTorch | Prozor: 30 | Epoha: 150 | Uređaj: mps")
     print("Trening modela je pokrenut...")
     start_time = time.time()
     
-    for epoha in range(1, 101):
+    for epoha in range(1, 151):
         model.train()
         ukupni_gubitak = 0
         for x_batch, y_batch in dataloader:
@@ -179,7 +179,17 @@ if __name__ == "__main__":
 
 
 """
+Mamba-2 TFT PyTorch | Prozor: 30 | Epoha: 150 | Uređaj: mps
+Trening modela je pokrenut...
+PyTorch Epoha [50/150] | Kategorijalni Gubitak: 8.7133
+PyTorch Epoha [100/150] | Kategorijalni Gubitak: 1.8735
+PyTorch Epoha [150/150] | Kategorijalni Gubitak: 1.3047
+Trening završen za: 192.25 sekundi.
 
+==================================================
+REZULTAT ZA FAJL /data/loto7_4682_k72_loto_plus_1719.csv (Sledeći red - PyTorch V3):
+[ 4  x  7 y 25 z 31]
+==================================================
 """
 
 
@@ -197,27 +207,6 @@ Model V4: Kanonski TFT Kategorijalni Klasifikator (Apple MLX - Native Silicon)
 Arhitektura Mamba 2 se zasniva na teoriji Structured State Space Duality (SSD). 
 Mamba 2 omogućava da se proračun stanja transformiše u blokovske matrične multiplikacije, 
 što je znatno lakše napisati u čistom Python-u/PyTorch-u. 
-"""
-
-
-
-"""
-Optimalni odnosa između dužine istorijskog prozora i broja epoha za bazu podataka. 
-Cilj je balans: dovoljno velik prozor da Mamba-2 uhvati cikluse, 
-ali dovoljno primera za trening da model ne upadne u hiper-podešavanje (overfitting).
-
-Evo optimalnih vrednosti za oba modela na osnovu količine podataka u tri CSV fajla, 
-kako bi se sprečio overfitting (prenaučenost) i maksimalno iskoristila dužina istorije: 
-
-Model V1,V3: PyTorch (Kraći prozor, brža konvergencija)
-Za 4682 reda: Prozor: 40 | Epohe: 150 
-Za 2963 reda: Prozor: 30 | Epohe: 120 
-Za 1719 reda: Prozor: 20 | Epohe: 100  
-
-Model V2,V4: Apple MLX (Širi prozor, dublja istorija)
-Za 4682 reda: Prozor: 200 | Epohe: 1200 
-Za 2963 reda: Prozor: 100 | Epohe: 1000 
-Za 1719 reda: Prozor:  50 | Epohe: 400 
 """
 
 
