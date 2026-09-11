@@ -1,6 +1,6 @@
 # Model V3: Kanonski TFT Kategorijalni Klasifikator (PyTorch - Apple Silicon Compatible) 
 
-
+# NEW last version
 
 import torch
 import torch.nn as nn
@@ -128,18 +128,18 @@ def treniraj_v1():
     device = torch.device("mps" if torch.backends.mps.is_available() else "cpu")
     csv_putanja = "/data/loto7_4682_k72.csv"
     
-    dataset = LotoPyTorchDataset(csv_putanja, prozor=40)
+    dataset = LotoPyTorchDataset(csv_putanja, prozor=50)
     dataloader = DataLoader(dataset, batch_size=32, shuffle=True)
     
     model = PyTorchCanonicalTFT().to(device)
     optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
     kriterijum = nn.CrossEntropyLoss()
     
-    print("Mamba-2 TFT PyTorch | Prozor: 40 | Epoha: 150 | Uređaj: mps")
+    print("Mamba-2 TFT PyTorch | Prozor: 50 | Epoha: 250 | Uređaj: mps")
     print("Trening modela je pokrenut...")
     start_time = time.time()
     
-    for epoha in range(1, 151):
+    for epoha in range(1, 251):
         model.train()
         ukupni_gubitak = 0
         for x_batch, y_batch in dataloader:
@@ -157,7 +157,7 @@ def treniraj_v1():
             ukupni_gubitak += gubitak.item()
             
         if epoha % 50 == 0:
-            print(f"PyTorch Epoha [{epoha}/150] | Kategorijalni Gubitak: {ukupni_gubitak/len(dataloader):.4f}")
+            print(f"PyTorch Epoha [{epoha}/250] | Kategorijalni Gubitak: {ukupni_gubitak/len(dataloader):.4f}")
             
     print(f"Trening završen za: {time.time() - start_time:.2f} sekundi.")
     
@@ -179,16 +179,18 @@ if __name__ == "__main__":
 
 
 """
-Mamba-2 TFT PyTorch | Prozor: 40 | Epoha: 150 | Uređaj: mps
+Mamba-2 TFT PyTorch | Prozor: 50 | Epoha: 250 | Uređaj: mps
 Trening modela je pokrenut...
-PyTorch Epoha [50/150] | Kategorijalni Gubitak: 13.4646
-PyTorch Epoha [100/150] | Kategorijalni Gubitak: 9.3428
-PyTorch Epoha [150/150] | Kategorijalni Gubitak: 7.2679
-Trening završen za: 546.79 sekundi.
+PyTorch Epoha [50/250] | Kategorijalni Gubitak: 14.2639
+PyTorch Epoha [100/250] | Kategorijalni Gubitak: 10.3028
+PyTorch Epoha [150/250] | Kategorijalni Gubitak: 7.9752
+PyTorch Epoha [200/250] | Kategorijalni Gubitak: 6.7579
+PyTorch Epoha [250/250] | Kategorijalni Gubitak: 5.9427
+Trening završen za: 878.38 sekundi.
 
 ==================================================
-REZULTAT ZA FAJL /data/loto7_4682_k72.csv (Sledeći red - PyTorch V3):
-[ 5  x 21 y 28 z 35]
+REZULTAT ZA FAJL /Users/4c/Desktop/GHQ/data/loto7_4682_k72.csv (Sledeći red - PyTorch V3):
+[ 1  x 10 y 18 z 27]
 ==================================================
 """
 
@@ -207,27 +209,6 @@ Model V4: Kanonski TFT Kategorijalni Klasifikator (Apple MLX - Native Silicon)
 Arhitektura Mamba 2 se zasniva na teoriji Structured State Space Duality (SSD). 
 Mamba 2 omogućava da se proračun stanja transformiše u blokovske matrične multiplikacije, 
 što je znatno lakše napisati u čistom Python-u/PyTorch-u. 
-"""
-
-
-
-"""
-Optimalni odnosa između dužine istorijskog prozora i broja epoha za bazu podataka. 
-Cilj je balans: dovoljno velik prozor da Mamba-2 uhvati cikluse, 
-ali dovoljno primera za trening da model ne upadne u hiper-podešavanje (overfitting).
-
-Evo optimalnih vrednosti za oba modela na osnovu količine podataka u tri CSV fajla, 
-kako bi se sprečio overfitting (prenaučenost) i maksimalno iskoristila dužina istorije: 
-
-Model V1,V3: PyTorch (Kraći prozor, brža konvergencija)
-Za 4682 reda: Prozor: 40 | Epohe: 150 
-Za 2963 reda: Prozor: 30 | Epohe: 120 
-Za 1719 reda: Prozor: 20 | Epohe: 100  
-
-Model V2,V4: Apple MLX (Širi prozor, dublja istorija)
-Za 4682 reda: Prozor: 200 | Epohe: 1200 
-Za 2963 reda: Prozor: 100 | Epohe: 1000 
-Za 1719 reda: Prozor:  50 | Epohe: 400 
 """
 
 
